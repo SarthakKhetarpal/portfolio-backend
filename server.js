@@ -46,7 +46,7 @@ app.post('/api/gfgdata', async (req, res) => {
 
 //Route for sending email
 app.post('/user/send-email', async (req, res) => {
-    const { to, subject, text } = req.body;
+    const { to, subject, text, user_subject, user_msg } = req.body;
 
     // Create transporter
     const transporter = nodemailer.createTransport({
@@ -58,7 +58,7 @@ app.post('/user/send-email', async (req, res) => {
     });
 
     // Email options
-    const mailOptions = {
+    const mail1Options = {
         from: process.env.EMAIL_USER,
         to,
         bcc: "sarthakkhetarpal2000@icloud.com",
@@ -66,8 +66,17 @@ app.post('/user/send-email', async (req, res) => {
         text,
     };
 
+    // Email2 options
+    const mail2Options = {
+        from: process.env.EMAIL_USER,
+        to:"sarthakkhetarpal2000@icloud.com",
+        subject:user_subject,
+        text:user_msg,
+    };
+
     try {
-        await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mail1Options);
+        await transporter.sendMail(mail2Options);
         console.log("Mail sent successfully");
         res.status(200).json({ message: "Email sent successfully!" });
     } catch (error) {
